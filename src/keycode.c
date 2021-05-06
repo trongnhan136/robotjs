@@ -139,9 +139,26 @@ CFStringRef createStringForKey(CGKeyCode keyCode)
         TISGetInputSourceProperty(currentKeyboard,
                                   kTISPropertyUnicodeKeyLayoutData);
 
-    if(!layoutData){
+	if(!layoutData){
       CFRelease(currentKeyboard);
-      currentKeyboard = TISCopyCurrentASCIICapableKeyboardInputSource();
+      currentKeyboard = TISCopyCurrentASCIICapableKeyboardLayoutInputSource();
+      layoutData =
+        TISGetInputSourceProperty(currentKeyboard,
+                                  kTISPropertyUnicodeKeyLayoutData);
+    }
+
+	if(!layoutData){
+      CFRelease(currentKeyboard);
+      currentKeyboard = TISCopyCurrentKeyboardLayoutInputSource();
+      layoutData =
+        TISGetInputSourceProperty(currentKeyboard,
+                                  kTISPropertyUnicodeKeyLayoutData);
+    }
+
+
+	if(!layoutData){
+      CFRelease(currentKeyboard);
+      currentKeyboard = TISCopyCurrentASCIICapableKeyboardLayoutInputSource();
       layoutData =
         TISGetInputSourceProperty(currentKeyboard,
                                   kTISPropertyUnicodeKeyLayoutData);
@@ -173,7 +190,7 @@ CFStringRef createStringForKey(CGKeyCode keyCode)
     CFRelease(currentKeyboard);
 
      if (error != noErr) {
-        printf("Error: Could not translate key code %hu to a Unicode character using the keyboard layout. (%d)", keyCode, error);
+        printf("Error: Could not translate key code to a Unicode character using the keyboard layout. ");
         return NULL;
     }
 
