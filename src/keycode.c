@@ -134,30 +134,50 @@ MMKeyCode keyCodeForChar(const char c)
 
 CFStringRef createStringForKey(CGKeyCode keyCode)
 {
-	TISInputSourceRef currentKeyboard = TISCopyCurrentASCIICapableKeyboardInputSource();
-	CFDataRef layoutData =
-		TISGetInputSourceProperty(currentKeyboard,
-		                          kTISPropertyUnicodeKeyLayoutData);
-	const UCKeyboardLayout *keyboardLayout =
-		(const UCKeyboardLayout *)CFDataGetBytePtr(layoutData);
+    TISInputSourceRef currentKeyboard = TISCopyCurrentKeyboardInputSource();
+    CFDataRef layoutData =
+        TISGetInputSourceProperty(currentKeyboard,
+                                  kTISPropertyUnicodeKeyLayoutData);
 
-	UInt32 keysDown = 0;
-	UniChar chars[4];
-	UniCharCount realLength;
+    if(!layoutData){
+      CFRelease(currentKeyboard);
+      currentKeyboard = TISCopyCurrentASCIICapableKeyboardInputSource();
+      layoutData =
+        TISGetInputSourceProperty(currentKeyboard,
+                                  kTISPropertyUnicodeKeyLayoutData);
+    }
 
-	UCKeyTranslate(keyboardLayout,
-	               keyCode,
-	               kUCKeyActionDisplay,
-	               0,
-	               LMGetKbdType(),
-	               kUCKeyTranslateNoDeadKeysBit,
-	               &keysDown,
-	               sizeof(chars) / sizeof(chars[0]),
-	               &realLength,
-	               chars);
-	CFRelease(currentKeyboard);
+    if (!layoutData) {
+         printf("Error: Could not get Unicode keyboard layout for translating key.");
+        return NULL;
+    }
 
-	return CFStringCreateWithCharacters(kCFAllocatorDefault, chars, 1);
+    const UCKeyboardLayout *keyboardLayout =
+        (const UCKeyboardLayout *)CFDataGetBytePtr(layoutData);
+
+    UInt32 keysDown = 0;
+    UniChar chars[4];
+    UniCharCount realLength;
+
+   OSStatus error = UCKeyTranslate(keyboardLayout,
+                   keyCode,
+                   kUCKeyActionDisplay,
+                   0,
+                   LMGetKbdType(),
+                   kUCKeyTranslateNoDeadKeysBit,
+                   &keysDown,
+                   sizeof(chars) / sizeof(chars[0]),
+                   &realLength,
+                   chars);
+
+    CFRelease(currentKeyboard);
+
+     if (error != noErr) {
+        printf("Error: Could not translate key code %hu to a Unicode character using the keyboard layout. (%d)", keyCode, error);
+        return NULL;
+    }
+
+    return CFStringCreateWithCharacters(kCFAllocatorDefault, chars, 1);
 }
 
 #endif
