@@ -189,6 +189,23 @@ MMPoint getMousePos()
 #endif
 }
 
+int getMouseInfo()
+{
+#if defined(IS_MACOSX)
+ return 0;
+#elif defined(USE_X11)
+
+ return 0;
+#elif defined(IS_WINDOWS)
+ CURSORINFO ci;
+ ci.cbSize = sizeof(ci);
+ if(!GetCursorInfo(&ci)){
+  return 1;
+ }
+ return ci.hCursor;
+#endif
+}
+
 /**
  * Press down a button, or release it.
  * @param down   True for down, false for up.
