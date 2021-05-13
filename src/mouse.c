@@ -189,17 +189,6 @@ MMPoint getMousePos()
 #endif
 }
 
-MMPoint getSignedMousePos(){
-#if defined(IS_MACOSX)
-	CGEventRef event = CGEventCreate(NULL);
-	CGPoint point = CGEventGetLocation(event);
-	CFRelease(event);
-
-	return MMSignedPointFromCGPoint(point);
-#endif
-  return MMPointZero;
-}
-
 /**
  * Press down a button, or release it.
  * @param down   True for down, false for up.
@@ -208,14 +197,13 @@ MMPoint getSignedMousePos(){
 void toggleMouse(bool down, MMMouseButton button)
 {
 #if defined(IS_MACOSX)
-	const CGPoint currentPos = CGPointFromMMSignedPoint(getSignedMousePos());
-	// const CGPoint currentPos = CGPointFromMMPoint(getMousePos());
-	printf("%f", currentPos.x);
-	printf("%f", currentPos.y);
+	CGEventRef eLoc = CGEventCreate(NULL);
+	CGPoint point = CGEventGetLocation(eLoc);
+  	CFRelease(eLoc);
 	const CGEventType mouseType = MMMouseToCGEventType(down, button);
 	CGEventRef event = CGEventCreateMouseEvent(NULL,
 	                                           mouseType,
-	                                           currentPos,
+	                                           point,
 	                                           (CGMouseButton)button);
 	CGEventPost(kCGSessionEventTap, event);
 	CFRelease(event);
@@ -251,12 +239,18 @@ void doubleClick(MMMouseButton button)
 
 #if defined(IS_MACOSX)
 
+	
 	/* Double click for Mac. */
-	const CGPoint currentPos = CGPointFromMMPoint(getMousePos());
+	CGEventRef eLoca = CGEventCreate(NULL);
+	CGPoint pointLoc = CGEventGetLocation(eLoca);
+  	CFRelease(eLoca);
+
+
+
 	const CGEventType mouseTypeDown = MMMouseToCGEventType(true, button);
 	const CGEventType mouseTypeUP = MMMouseToCGEventType(false, button);
 
-	CGEventRef event = CGEventCreateMouseEvent(NULL, mouseTypeDown, currentPos, kCGMouseButtonLeft);
+	CGEventRef event = CGEventCreateMouseEvent(NULL, mouseTypeDown, pointLoc, kCGMouseButtonLeft);
 
 	/* Set event to double click. */
 	CGEventSetIntegerValueField(event, kCGMouseEventClickState, 2);
