@@ -96,9 +96,22 @@ void win32KeyEvent(int key, MMKeyFlags flags)
 		}
 	}
 
+
 	/* Set the scan code for keyup */
 	if ( flags & KEYEVENTF_KEYUP ) {
 		scan |= 0x80;
+	}
+
+	if(key == VK_SNAPSHOT){
+		INPUT keyboardInput;
+		keyboardInput.type = INPUT_KEYBOARD;
+		keyboardInput.ki.wVk = key;
+		keyboardInput.ki.wScan = scan;
+		keyboardInput.ki.dwFlags = flags;
+		keyboardInput.ki.time = 0;
+		keyboardInput.ki.dwExtraInfo = 0;
+		SendInput(1, &keyboardInput, sizeof(keyboardInput));
+		return;
 	}
 
 	flags |= KEYEVENTF_SCANCODE;
