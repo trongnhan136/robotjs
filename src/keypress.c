@@ -90,6 +90,10 @@ void win32KeyEvent(int key, MMKeyFlags flags)
 		case VK_BROWSER_FAVORITES:
 		case VK_BROWSER_HOME:
 		case VK_LAUNCH_MAIL:
+		case VK_HANGUL: /*IME KEY*/
+		case VK_JUNJA:
+		case VK_FINAL:
+		case VK_KANJI:
 		{
 			flags |= KEYEVENTF_EXTENDEDKEY;
 			break;

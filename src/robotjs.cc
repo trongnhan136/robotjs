@@ -376,6 +376,12 @@ static KeyNames key_names[] =
 	{ "lights_kbd_up",    K_LIGHTS_KBD_UP },
 	{ "lights_kbd_down",  K_LIGHTS_KBD_DOWN },
 
+	{ "ime_hangul",  K_IME_HANGUL },
+	{ "ime-junja",  K_IME_JUNJA },
+	{ "ime-final",  K_IME_FINAL },
+	{ "ime-kanji",  K_IME_KANJI },
+	
+
 	{ NULL,               K_NOT_A_KEY } /* end marker */
 };
 
