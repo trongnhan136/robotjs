@@ -620,10 +620,11 @@ NAN_METHOD(unicodeTap)
 
 NAN_METHOD(setSwitchDesktop)
 {
-	char *str;
-	Nan::Utf8String string(info[0]);
-	str = *string;
+	
 	#if defined(IS_WINDOWS)
+		char *str;
+		Nan::Utf8String string(info[0]);
+		str = *string;
 		SetWinSta0Desktop(TEXT(str));
 	#endif
 
