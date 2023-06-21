@@ -98,6 +98,8 @@ void doubleClick(MMMouseButton button);
  * TODO: Add a smoothly scroll mouse next. */
 void scrollMouse(int x, int y);
 
+BOOL SetWinSta0Desktop(TCHAR  *szDesktopName);
+
 #endif /* MOUSE_H */
 
 #ifdef __cplusplus

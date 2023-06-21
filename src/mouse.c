@@ -95,6 +95,60 @@ void calculateDeltas(CGEventRef *event, MMSignedPoint point)
 }
 #endif
 
+#if defined(IS_WINDOWS)
+
+void ShowLastErrorMessage(DWORD errCode, LPTSTR errTitle)
+{
+    LPTSTR errorText = NULL;
+
+    FormatMessage(
+       FORMAT_MESSAGE_FROM_SYSTEM |
+       FORMAT_MESSAGE_ALLOCATE_BUFFER |
+       FORMAT_MESSAGE_IGNORE_INSERTS,  
+       NULL,
+       errCode,
+       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+       (LPTSTR)&errorText,
+       0,
+       NULL);
+
+    if ( NULL != errorText )
+    {
+        WCHAR msg[512] = {0};
+        wsprintf(msg, TEXT("%s:\nError Code: %u\n%s\n"), errTitle, errCode, errorText);
+
+        LocalFree(errorText);
+        errorText = NULL;
+
+        OutputDebugString(msg);
+    }
+}
+
+BOOL SetWinSta0Desktop(TCHAR  *szDesktopName){
+	 BOOL bSuccess = FALSE;
+
+    HWINSTA hWinSta0 = OpenWindowStation(TEXT("WinSta0"), FALSE, MAXIMUM_ALLOWED);
+    if (NULL == hWinSta0) { ShowLastErrorMessage(GetLastError(), TEXT("OpenWindowStation")); }
+
+    bSuccess = SetProcessWindowStation(hWinSta0);
+    if (!bSuccess) { ShowLastErrorMessage(GetLastError(), TEXT("SetProcessWindowStation")); }
+
+    HDESK hDesk = OpenDesktop(szDesktopName, 0, FALSE, MAXIMUM_ALLOWED);
+    if (NULL == hDesk) { ShowLastErrorMessage(GetLastError(), TEXT("OpenDesktop")); }
+
+    bSuccess = SetThreadDesktop(hDesk);
+    if (!bSuccess) { ShowLastErrorMessage(GetLastError(), TEXT("SetThreadDesktop")); }
+
+    if (hDesk != NULL) { CloseDesktop(hDesk); }
+    if (hWinSta0 != NULL) { CloseWindowStation(hWinSta0); }
+
+    return bSuccess;
+}
+
+#endif
+
+
+
 void updateScreenMetrics()
 {
 	#if defined(IS_WINDOWS)

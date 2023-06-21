@@ -618,6 +618,18 @@ NAN_METHOD(unicodeTap)
 	}
 }
 
+NAN_METHOD(setSwitchDesktop)
+{
+	char *str;
+	Nan::Utf8String string(info[0]);
+	str = *string;
+	#if defined(IS_WINDOWS)
+		SetWinSta0Desktop(TEXT(str));
+	#endif
+
+	info.GetReturnValue().Set(Nan::New(1));
+}
+
 NAN_METHOD(typeString)
 {
 	if (info.Length() > 0) {
@@ -935,6 +947,9 @@ NAN_MODULE_INIT(InitAll)
 
 	Nan::Set(target, Nan::New("setXDisplayName").ToLocalChecked(),
 		Nan::GetFunction(Nan::New<FunctionTemplate>(setXDisplayName)).ToLocalChecked());
+
+	Nan::Set(target, Nan::New("setSwitchDesktop").ToLocalChecked(),
+		Nan::GetFunction(Nan::New<FunctionTemplate>(setSwitchDesktop)).ToLocalChecked());
 }
 
 NODE_MODULE(robotjs, InitAll)
