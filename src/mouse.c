@@ -270,7 +270,7 @@ void toggleMouse(bool down, MMMouseButton button)
 	mouseInput.type = INPUT_MOUSE;
 	mouseInput.mi.dx = 0;
 	mouseInput.mi.dy = 0;
-	mouseInput.mi.dwFlags = MMMouseToMEventF(down, button);
+	mouseInput.mi.dwFlags = MMMouseToMEventF(down, button) | MOUSEEVENTF_VIRTUALDESK;
 	mouseInput.mi.time = 0; //System will provide the timestamp
 	mouseInput.mi.dwExtraInfo = 0;
 	mouseInput.mi.mouseData = 0;
