@@ -134,7 +134,7 @@ MMKeyCode keyCodeForChar(const char c)
 
 CFStringRef createStringForKey(CGKeyCode keyCode)
 {
-    TISInputSourceRef currentKeyboard = TISCopyCurrentKeyboardInputSource();
+	TISInputSourceRef currentKeyboard = TISCopyCurrentKeyboardInputSource();
     CFDataRef layoutData =
         TISGetInputSourceProperty(currentKeyboard,
                                   kTISPropertyUnicodeKeyLayoutData);

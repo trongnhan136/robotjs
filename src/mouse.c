@@ -239,7 +239,6 @@ void doubleClick(MMMouseButton button)
 
 #if defined(IS_MACOSX)
 
-	
 	/* Double click for Mac. */
 	CGEventRef eLoca = CGEventCreate(NULL);
 	CGPoint pointLoc = CGEventGetLocation(eLoca);
