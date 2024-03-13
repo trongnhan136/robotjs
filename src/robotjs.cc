@@ -787,6 +787,33 @@ Napi::Value getScreenSizeWrapper(const Napi::CallbackInfo& info)
 	return obj;
 }
 
+Napi::Value getRealMonitorWrapper(const Napi::CallbackInfo& info)
+{
+	Napi::Env env = info.Env();
+	if (info.Length() != 2)
+	{
+		Napi::Error::New(env, "Invalid number of arguments.").ThrowAsJavaScriptException();
+		return env.Null();
+	}
+
+	int32_t x = info[0].As<Napi::Number>().Int32Value();
+	int32_t y = info[1].As<Napi::Number>().Int32Value();
+
+	MMSignedPoint point;
+	point = MMSignedPointMake(x, y);
+	
+	MMSize displaySize = realMonitorSize(point);
+	//Create our return object.
+	Napi::Object obj = Napi::Object::New(env);
+	obj.Set(Napi::String::New(env, "width"), Napi::Number::New(env, displaySize.width));
+	obj.Set(Napi::String::New(env, "height"), Napi::Number::New(env, displaySize.height));
+
+	//Return our object with .width and .height.
+	return obj;
+}
+
+
+
 Napi::Value getXDisplayNameWrapper(const Napi::CallbackInfo& info)
 {
 	Napi::Env env = info.Env();
@@ -987,6 +1014,9 @@ Napi::Object InitAll(Napi::Env env, Napi::Object exports)
 
 	exports.Set(Napi::String::New(env, "getScreenSize"),
 				Napi::Function::New(env, getScreenSizeWrapper));
+
+	exports.Set(Napi::String::New(env, "getRealMonitor"),
+				Napi::Function::New(env, getRealMonitorWrapper));
 
 	exports.Set(Napi::String::New(env, "captureScreen"),
 				Napi::Function::New(env, captureScreenWrapper));

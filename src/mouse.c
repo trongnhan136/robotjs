@@ -104,6 +104,25 @@ void updateScreenMetrics()
 		vscreenMinY = GetSystemMetrics(SM_YVIRTUALSCREEN);
 	#endif
 }
+
+
+MMSize realMonitorSize(MMSignedPoint point){
+	int width = 0;
+	int height = 0;
+	
+	#if defined(IS_WINDOWS)
+		const POINT pt={point.x, point.y};
+		HMONITOR hmon=MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+		MONITORINFO info;
+		info.cbSize = sizeof(MONITORINFO);
+		GetMonitorInfo(monitor, &info);
+		width = info.rcMonitor.right - info.rcMonitor.left;
+		height = info.rcMonitor.bottom - info.rcMonitor.top;
+	#endif
+
+	return MMSizeMake(width, height);
+}
+
 /**
  * Move the mouse to a specific point.
  * @param point The coordinates to move the mouse to (x, y).
