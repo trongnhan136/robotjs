@@ -35,12 +35,10 @@ export function getPixelColor(x: number, y: number): string;
 export function getScreenSize(): {
   width: number;
   height: number;
-  x: number;
-  y: number;
 };
 export function getRealMonitor(
   x: number,
   y: number
-): { width: number; height: number };
+): { width: number; height: number; x: number; y: number };
 
 export var screen: Screen;
