@@ -802,11 +802,16 @@ Napi::Value getRealMonitorWrapper(const Napi::CallbackInfo& info)
 	MMSignedPoint point;
 	point = MMSignedPointMake(x, y);
 	
-	MMSize displaySize = realMonitorSize(point);
+	MMRect displaySize = realMonitorSize(point);
+
+			printf("%d \n",displaySize.origin.x);
+
 	//Create our return object.
 	Napi::Object obj = Napi::Object::New(env);
-	obj.Set(Napi::String::New(env, "width"), Napi::Number::New(env, displaySize.width));
-	obj.Set(Napi::String::New(env, "height"), Napi::Number::New(env, displaySize.height));
+	obj.Set(Napi::String::New(env, "width"), Napi::Number::New(env, displaySize.size.width));
+	obj.Set(Napi::String::New(env, "height"), Napi::Number::New(env, displaySize.size.height));
+	obj.Set(Napi::String::New(env, "x"), Napi::Number::New(env, (int)displaySize.origin.x));
+	obj.Set(Napi::String::New(env, "y"), Napi::Number::New(env, (int)displaySize.origin.y));
 
 	//Return our object with .width and .height.
 	return obj;

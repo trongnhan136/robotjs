@@ -63,7 +63,7 @@ typedef int MMMouseWheelDirection;
 */
 void updateScreenMetrics();
 
-MMSize realMonitorSize(MMSignedPoint point);
+MMRect realMonitorSize(MMSignedPoint point);
 
 /* Immediately moves the mouse to the given point on-screen.
  * It is up to the caller to ensure that this point is within the

@@ -2,7 +2,6 @@
 #include "screen.h"
 #include "deadbeef_rand.h"
 #include "microsleep.h"
-
 #include <math.h> /* For floor() */
 
 #if defined(IS_MACOSX)
@@ -106,9 +105,11 @@ void updateScreenMetrics()
 }
 
 
-MMSize realMonitorSize(MMSignedPoint point){
+MMRect realMonitorSize(MMSignedPoint point){
 	int width = 0;
 	int height = 0;
+	int x = 0;
+	int y = 0;
 	
 	#if defined(IS_WINDOWS)
 		const POINT pt={point.x, point.y};
@@ -120,9 +121,12 @@ MMSize realMonitorSize(MMSignedPoint point){
 		EnumDisplaySettings(info.szDevice, ENUM_CURRENT_SETTINGS, &devmode);
 		width = devmode.dmPelsWidth;
 		height = devmode.dmPelsHeight;
+		
+		x = devmode.dmPosition.x;
+		y = devmode.dmPosition.y;
 	#endif
 
-	return MMSizeMake(width, height);
+	return MMRectMake(x , y, width, height);
 }
 
 /**
