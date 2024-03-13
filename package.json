@@ -5,10 +5,6 @@
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "test": "run-script-os",
-    "test:darwin:linux": "jasmine test/**/*.js",
-    "test-keyboard": "node test/keyboard.js",
-    "test:win32": "jasmine test/**/*.js",
     "install": "node-gyp-build",
     "prebuild": "prebuildify -t 16.0.0 --napi --strip",
     "prebuild-darwin-universal": "prebuildify -t 16.0.0 --napi --strip --arch x64+arm64",
@@ -55,10 +51,6 @@
     "node-gyp-build": "^4.3.0"
   },
   "devDependencies": {
-    "jasmine": "^2.99.0",
-    "prebuildify": "^5.0.0",
-    "run-script-os": "^1.0.3",
-    "tape": "^4.8.0",
-    "targetpractice": "0.0.7"
+    "prebuildify": "^5.0.0"
   }
 }
