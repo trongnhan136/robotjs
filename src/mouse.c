@@ -112,20 +112,14 @@ MMSize realMonitorSize(MMSignedPoint point){
 	
 	#if defined(IS_WINDOWS)
 		const POINT pt={point.x, point.y};
-		HMONITOR monitor=MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
-		MONITORINFO info;
-		info.cbSize = sizeof(MONITORINFO);
+		HMONITOR monitor= MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+		MONITORINFOEX info = {sizeof(MONITORINFOEX)};
 		GetMonitorInfo(monitor, &info);
-
-
-		DEVMODE devmode = {};
-    	devmode.dmSize = sizeof(DEVMODE);
-		BOOL result = EnumDisplaySettings(info.szDevice, ENUM_CURRENT_SETTINGS, &devmode)
-		if(result){
-			width = devmode.dmPelsWidth;
-			height = devmode.dmPelsHeight;
-		}
-
+		DEVMODE devmode;
+		devmode.dmSize = sizeof(DEVMODE);
+		EnumDisplaySettings(info.szDevice, ENUM_CURRENT_SETTINGS, &devmode);
+		width = devmode.dmPelsWidth;
+		height = devmode.dmPelsHeight;
 	#endif
 
 	return MMSizeMake(width, height);
