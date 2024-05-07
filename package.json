@@ -47,10 +47,10 @@
   },
   "homepage": "https://github.com/octalmage/robotjs",
   "dependencies": {
-    "node-addon-api": "^4.2.0",
-    "node-gyp-build": "^4.3.0"
+    "node-addon-api": "^8.0.0",
+    "node-gyp-build": "^4.8.1"
   },
   "devDependencies": {
-    "prebuildify": "^5.0.0"
+    "prebuildify": "^6.0.1"
   }
 }
