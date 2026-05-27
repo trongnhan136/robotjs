@@ -23,11 +23,11 @@
       },
       "msvs_settings": {
         "VCCLCompilerTool": {
-          "ExceptionHandling": 1
-        },
-        "AdditionalOptions": [
-          "-std:c++17"
-        ]
+          "ExceptionHandling": 1,
+          "AdditionalOptions": [
+            "-std:c++17"
+          ]
+        }
       },
       "include_dirs": [
         "<!(node -p \"require('node-addon-api').include_dir\")"
