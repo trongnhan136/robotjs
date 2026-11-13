@@ -1,10 +1,18 @@
 {
   "name": "robotjs",
-  "version": "0.6.14",
+  "version": "0.6.15",
   "description": "Node.js Desktop Automation.",
-  "main": "index.js",
+  "main": "index.min.js",
   "typings": "index.d.ts",
+  "files": [
+    "index.min.js",
+    "index.d.ts",
+    "binding.gyp",
+    "src"
+  ],
   "scripts": {
+    "build:js": "terser index.js --compress --mangle --comments all --output index.min.js",
+    "prepare": "npm run build:js",
     "install": "node-gyp-build",
     "prebuild": "prebuildify -t 16.0.0 --napi --strip",
     "prebuild-darwin-universal": "prebuildify -t 16.0.0 --napi --strip --arch x64+arm64",
@@ -51,6 +59,7 @@
     "node-gyp-build": "^4.8.1"
   },
   "devDependencies": {
-    "prebuildify": "^6.0.1"
+    "prebuildify": "^6.0.1",
+    "terser": "^5.44.1"
   }
 }

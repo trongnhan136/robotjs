@@ -1,3 +1,4 @@
+/*! Tệp nguồn được giữ dễ đọc; bản phân phối sử dụng index.min.js đã được rút gọn. */
 var robotjs = require("node-gyp-build")(__dirname);
 
 module.exports = robotjs;
